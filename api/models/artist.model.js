@@ -42,6 +42,30 @@ Artist.findById = (artistId, result) => {
     });
 };
 
+Artist.getArtistPorfolio = (artistId, result) => {
+    var sql = `SELECT * FROM artwork WHERE artistId = ${artistId} ; SELECT * FROM exhibitions WHERE artistId = ${artistId};`;
+    var portfolio = {};
+    pool.query(sql, [2, 1], (err, res) => {
+          
+      if (err){
+          console.log("error: ", err);
+          result(error, null);
+          return;
+      }
+
+      if (res[0].length && res[1].length) { 
+        portfolio['artwork']      = res[0];
+        portfolio['exhibitions']  = res[1];
+        result(null, portfolio);
+        return;
+      } 
+
+      // not found Artist with the id
+      result({ kind: "not_found" }, null);
+    });
+  
+};
+
 Artist.findAll = result => {
     pool.query(`SELECT * from artists`, (err, res) =>{
         if (err){

@@ -1,13 +1,14 @@
 require("dotenv").config();
 const { json } = require("express");
 const express = require("express");
+const cors = require('cors')
 const app = express();
 const artistRouter  = require("./api/routes/artist.routes");
 const artworkRouter = require("./api/routes/artwork.routes");
 const exhibitionRouter    = require("./api/routes/exhibition.routes");
  
 app.use(express.json());
-
+app.use(cors());
 
 app.use("/api/artists", artistRouter);
 app.use("/api/artworks", artworkRouter); 

@@ -40,6 +40,21 @@ module.exports = {
             }  
         });
     },
+    getArtistPorfolio : (req, res) => {
+
+        const id = req.params.id; 
+        Artist.getArtistPorfolio(id, (err, results) => {
+            if (err){
+                if (err.kind === "not_found"){
+                    res.status(404).send({message: "Portfolio not found for Artist with id: "+ id });
+                }else{
+                    res.status(500).send({message: "Database error retrieving Artist : "+ id})
+                }
+            }else{
+                res.send(results);
+            }  
+        });
+    },
     findAll : (req, res) => {
 
         Artist.findAll((err, results) =>{
